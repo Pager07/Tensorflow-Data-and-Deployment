@@ -58,10 +58,10 @@ export class MnistData{
                 //Setting the canvas size
                 const  chunkSize = 5000;
                 canvas.width = img.width;
-                canvas.height = img.chuckSize
+                canvas.height = chunkSize;
                 
                 //Split: Process 5000 rows each time
-                for(let i = 0; i< NUM_DATASET_ELEMENTS/ chuckSize; i++){
+                for(let i = 0; i< NUM_DATASET_ELEMENTS/ chunkSize; i++){
                     //Create a list to store pixel values. We cant use normal list
                     //glMatrix was developed primarily for WebGL, which requires 
                     //that vectors and matrices be passed as Float32Array. We are using WebGl for GPU access
@@ -72,13 +72,17 @@ export class MnistData{
                     // it lets the choose the block/part to view in the buffer
                     // What does lengthOfBuffer: this refers to length of the array
                     // We are going to store only one channel, so the size is only (IMAGE_SIZE*chunkSize)
+                    //More at: https://webplatform.github.io/docs/javascript/Float32Array/
                     const datasetBytesView = new Float32Array(
                         datasetBytesBuffer,
                         i*IMAGE_SIZE*chunkSize*4,
                         IMAGE_SIZE * chunkSize);
-
-                    ctx.drawImage(img,0,i*chunkSize,img.width, chunkSize,0,0,img,width,
-                        chuckSize);
+                    
+                    //Put part of the image to the canvas
+                    //More at: 
+                    //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+                    ctx.drawImage(img,0,i*chunkSize,img.width,chunkSize,
+                        0,0,img.width,chunkSize);
 
                     //Get An ImageData object containing the image data for the rectangle 
                     //of the canvas specified.
@@ -92,6 +96,9 @@ export class MnistData{
                     for(let j =0; j< imageData.data.length / 4 ; j++){
                         //All channels hold an equal value since the image is grayscale,
                         //so just read  the red channel.
+                        // The imageData.data is a flatten array, holding pixels values of all
+                        // the channels. eg.[R1,G1,B1,A1.....Rn,Gn,Bn,An].
+                        // As we only need 1 channel per pixel j*4
                         datasetBytesView[j] = imageData.data[j * 4] / 255;
                     }
 
