@@ -146,7 +146,56 @@ export class MnistData{
         
 
     }
-    nextTrainBatch(){}
-    nextTestBatch(){}
-    nextBatch(){}
+    nextTrainBatch(batchSize){
+        // Passes the array holding training images and labels
+        return this.nextBatch(
+            batchSize, [this.trainImages, this.trainLabels],()=>{
+                this.shuffledTrainIndex = 
+                    (this.shuffledTrainIndex+1) % this.trainIndices.length;
+                return this.trainIndices[this.shuffledTrainIndex]
+            }
+        );
+    }
+    nextTestBatch(batchSize){
+        return this.nextBatch(
+            batchSize, [this.testImages, this.testLabels], ()=>{
+                // find the index of the needed item ??
+                // I fail to understant moduls maths that happening here
+                this.shuffledTestIndex =
+                    (this.shuffledTestIndex +1) % this.testIndices.length;
+                
+                // get the item/index
+                return this.testIndices[this.shuffledTestIndex];
+            }
+        );
+    }
+    nextBatch(batchSize, data, index){
+        const batchImagesArray = new Float32Array(batchSize*IMAGE_SIZE);
+        const batchLabelsArray = new Uint8Array(batchSize * NUM_CLASSES);
+
+        for(let i =0; i<batchSize; i++){
+            //get the row number in array AKA X|Y
+            const idx = index();
+            //Why does slicing index start from idx*Image_size?
+            // It's whole alot easier, to see things as matrix.
+            //idx*IMAGE_SIZE represents the start of the row, while idx*IMAGE_SIZE+IMAGE_SIZE
+            // represents end of the row.
+            //Why does slicing index end at id*Image_size+Image_size?
+            //What does data[0] look like?: It can be array holding images for train|test
+            const image =
+                data[0].slice(idx*IMAGE_SIZE, idx*IMAGE_SIZE+IMAGE_SIZE);
+            //i*Image_Size points to the ith row
+            batchImagesArray.set(image, i*IMAGE_SIZE);
+
+            const label = 
+                data[1].slice(idx*NUM_CLASSES , idx*NUM_CLASSES+NUM_CLASSES);
+            batchLabelsArray.set(label, i*NUM_CLASSES);
+        }
+        // The batchImagesArray is of shape [batchSize , Image_Size]        
+        const xs = tf.tensor2d(batchImagesArray,[batchSize,IMAGE_SIZE]);
+        const labels = tf.tensor2d(batchLabelsArray,[batchSize, NUM_CLASSES]);
+
+        return {xs, labels}
+
+    }
 }
