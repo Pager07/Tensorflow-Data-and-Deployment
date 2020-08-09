@@ -3,6 +3,8 @@ const NUM_CLASSES = 10;
 const NUM_DATASET_ELEMENTS = 65000;
 
 const TRAIN_TEST_RATIO = 5/6;
+const NUM_TRAIN_ELEMENTS = Math.floor(TRAIN_TEST_RATIO * NUM_DATASET_ELEMENTS);
+const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
 
 const MINST_IMAGES_SPRITE_PATH = 
 'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';
@@ -103,10 +105,48 @@ export class MnistData{
                     }
 
                 }
-            }
+                //Make a new view that view all the buffer holding images data
+                this.datasetImages = new Float32Array(datasetBytesBuffer);
+                resolve();
+
+            };
             img.src = MINST_IMAGES_SPRITE_PATH
         });
+
+        //Use javascript fetch to get object of promise that will return labels
+        const labelsRequest = fetch(MINST_LABELS_PATH);
+
+        //imgResponse and labelsReponse are objects of promise types.
+        // Be aware of 2 things:
+        // First, we have to use "await" to wait for them to finish
+        // Second, return stuffs. by either Resolving or Rejecting 
+        const [imgResponse, labelsReponse] = 
+            await Promise.all([imgRequest, labelsRequest])
+        
+       this.datasetLabels = new Uint8Array(await labelsReponse.arrayBuffer());
+
+        //Create shuffled indices into the train/test set for when we select a
+        // random dataset element for training / validation
+        this.trainIndices = tf.util.createShuffledIndices(NUM_TRAIN_ELEMENTS);
+        this.testIndices = tf.util.createShuffledIndices(NUM_TEST_ELEMENTS);
+
+        //Slice the images and labels into ttrain and teset sets.
+        //Slice it from the view/array
+        this.trainImages  =
+            this.datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
+        
+        this.testImages = 
+            this.datasetImages.slice(IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
+        
+        this.trainLabels = 
+            this.datasetLabels.slice(0, IMAGE_SIZE*NUM_TRAIN_ELEMENTS);
+        
+        this.testLabels = 
+            this.datasetLabels.slice(IMAGE_SIZE*NUM_TRAIN_ELEMENTS);
+        
+
     }
     nextTrainBatch(){}
     nextTestBatch(){}
+    nextBatch(){}
 }
