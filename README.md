@@ -14,4 +14,17 @@
 3. Learn to use a toxicity model to determine if a phrase is toxic in a number of categories
 4. Use Mobilenet to detect objects in images
 
+### Week 4: Learning Objectives
+1. Learn how to do transfer-learning
+    - Freezing layers 
+    - Passing emmbedding to new set of last dense layers
+2. Learn how capture image data from webcam 
+    - Storing the captured data
+    - Training the model with captured data
+3. Learn how to capture image data for inference
+4. Learn to create UI for 
+    - collecting data
+    - making inference
+    
+
 
