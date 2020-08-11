@@ -1,5 +1,5 @@
 # Tensorflow-Data-and-Deployment
-___
+
 ## Course 1: Browser-based Models with Tensorflow.js
 
 ### Week 1: Learning Objectives
