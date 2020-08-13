@@ -1,0 +1,8 @@
+/*
+ Quantcast measurement tag
+ Copyright (c) 2008-2018, Quantcast Corp.
+*/
+(function(a,g,f){try{__qc("defaults",a,{labels:"_fp.event.Default"})}catch(l){}var h=function(e){var c=f.createElement("a");c.href=e;return c},k=function(e,c,a){return e?"nc"===e?!c||!a||0>c.indexOf(a):"eq"===e?c===a:"sw"===e?0===c.indexOf(a):"ew"===e?(e=c.length-a.length,c=c.lastIndexOf(a,e),-1!==c&&c===e):"c"===e?0<=c.indexOf(a):!1:!1},d=function(e,a,b){var d;d=g.top===g.self?f.location.href:h(f.referrer).href;k(a,d,b)?e(d):e(!1)},b=function(a){return"array"==={}.toString.call(a).match(/\s([a-zA-Z]+)/)[1].toLowerCase()?
+{labels:a.join(",")}:{labels:""+a}};__qc.apply(null,["rules",[a,null,[[b,"_fp.event.Membership Cancellation"]],[[d,"c","https://www.skillshare.com/membership/cancel"]]],[a,null,[[b,"_fp.event.Profile View"]],[[d,"c","https://www.skillshare.com/profile"]]],[a,null,[[b,"_fp.event.Login - Entry"]],[[d,"eq","https://www.skillshare.com/login"]]],[a,null,[[b,"_fp.event.Premium"]],[[d,"c","https://www.skillshare.com/premium"]]],[a,null,[[b,"_fp.event.Become A Teacher"]],[[d,"c","https://www.skillshare.com/teach"]]],
+[a,null,[[b,"_fp.event.Lifestyle"]],[[d,"c","https://www.skillshare.com/browse/lifestyle"]]],[a,null,[[b,"_fp.event.Technology"]],[[d,"c","https://www.skillshare.com/browse/technology"]]],[a,null,[[b,"_fp.event.Business"]],[[d,"c","https://www.skillshare.com/browse/business"]]],[a,null,[[b,"_fp.event.Creative"]],[[d,"c","https://www.skillshare.com/browse/creative"]]],[a,null,[[b,"_fp.event.Homepage"]],[[function(a,c,d){var b;b=g.top===g.self?f.location.pathname:h(f.referrer).pathname;k(c,b,d)?a(b):
+a(!1)},"eq","/"]]]])})("p-ZX0Yrb3eefUKS",window,document);
